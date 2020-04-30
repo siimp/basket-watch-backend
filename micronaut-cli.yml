@@ -1,0 +1,5 @@
+profile: service
+defaultPackage: basket.watch.backend
+---
+testFramework: junit
+sourceLanguage: java

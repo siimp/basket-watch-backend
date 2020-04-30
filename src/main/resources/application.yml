@@ -1,0 +1,31 @@
+---
+micronaut:
+  server:
+    port: 8888
+    cors:
+      enabled: true
+      configurations:
+        web:
+          allowedOrigins:
+            - http://localhost:8080
+
+  application:
+    name: basket-watch-backend
+---
+jackson:
+  serialization:
+    writeDatesAsTimestamps: false
+---
+datasources:
+  default:
+    url: jdbc:postgresql://localhost:5432/basket-watch
+    driverClassName: org.postgresql.Driver
+    username: basket-watch
+    password: basket-watch
+jpa:
+  default:
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: create-drop
+
