@@ -42,6 +42,6 @@ public class BasketItemService {
     private void updateBasket(Basket basket) {
         entityManager.flush();
         entityManager.refresh(basket);
-        basketService.updatePriceAndClearMinMax(basket);
+        basketService.updatePriceAndResetMinMax(basket);
     }
 }

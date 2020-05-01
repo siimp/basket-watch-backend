@@ -19,12 +19,6 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    /*
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    private ItemType type;
-    */
-
     @URL
     @NotBlank
     @NotNull

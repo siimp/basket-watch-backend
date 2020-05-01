@@ -12,6 +12,9 @@ import java.util.UUID;
 
 @Entity
 @Data
+@Table(indexes = {
+        @Index(name = "idx_created_at", columnList = "createdAt")
+})
 public class Basket {
 
     @Id
