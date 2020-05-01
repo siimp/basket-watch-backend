@@ -10,9 +10,7 @@ import javax.validation.constraints.NotNull;
 
 @Data
 @Entity
-@Table(
-        uniqueConstraints = @UniqueConstraint(columnNames = {"url"}, name = "uc_item_url")
-)
+@Table
 public class Item {
 
     @Id
@@ -22,6 +20,7 @@ public class Item {
     @URL
     @NotBlank
     @NotNull
+    @Column(unique = true)
     private String url;
 
     @NotBlank
