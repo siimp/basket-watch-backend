@@ -41,7 +41,7 @@ public class ItemScraperArvutitark implements ItemScraper {
 
         String start = "<div class=\"product-price\">";
         Integer startIndex = response.indexOf(start, startSectionIndex) + start.length();
-        Integer endIndex = response.indexOf("€", startIndex);
+        Integer endIndex = response.indexOf('€', startIndex);
         return new BigDecimal(response.substring(startIndex, endIndex));
     }
 

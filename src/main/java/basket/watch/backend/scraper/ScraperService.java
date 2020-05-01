@@ -33,12 +33,8 @@ public class ScraperService {
 
         String domain = uri.getHost();
 
-        ScrapedItem scrapedItem = null;
         ItemScraper itemScraper = findByDomain(domain);
-        if (itemScraper != null) {
-            scrapedItem = itemScraper.scrapeUrl(url);
-        }
-        return Optional.ofNullable(scrapedItem);
+        return Optional.ofNullable(itemScraper.scrapeUrl(url));
     }
 
     private ItemScraper findByDomain(String domain) {
@@ -47,6 +43,6 @@ public class ScraperService {
                 return itemScraper;
             }
         }
-        throw new RuntimeException("scraper not found for domain " + domain);
+        throw new ScraperNotFoundException();
     }
 }

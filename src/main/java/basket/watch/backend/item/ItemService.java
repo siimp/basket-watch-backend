@@ -37,7 +37,7 @@ public class ItemService {
         Optional<ScrapedItem> scrapedItemOptional = scraperService.scrape(url);
 
         if (scrapedItemOptional.isEmpty()) {
-            throw new RuntimeException("can not scrape url " + url);
+            throw new ItemNotScrapedException("can not scrape url " + url);
         }
 
         Item item = new Item();

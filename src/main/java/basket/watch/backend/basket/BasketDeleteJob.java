@@ -15,12 +15,14 @@ public class BasketDeleteJob {
 
     private static final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
+    private static final int BASKET_VALIDITY_IN_WEEKS = 8;
+
     private final BasketRepository basketRepository;
 
     @Scheduled(cron = "0 0 0 * * ?")
     void execute() {
         LOG.info("starting to delete old baskets");
-        int deletedBaskets = basketRepository.deleteAllByCreatedAtLessThan(ZonedDateTime.now().now().plusSeconds(60));
+        int deletedBaskets = basketRepository.deleteAllByCreatedAtLessThan(ZonedDateTime.now().plusWeeks(BASKET_VALIDITY_IN_WEEKS));
         LOG.info("deleted {} old baskets", deletedBaskets);
     }
 }

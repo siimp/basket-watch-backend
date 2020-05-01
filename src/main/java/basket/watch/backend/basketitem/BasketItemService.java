@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import javax.inject.Singleton;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
+import java.util.Optional;
 import java.util.UUID;
 
 @Singleton
@@ -28,14 +29,18 @@ public class BasketItemService {
 
     public void deleteBasketItem(UUID basketUuid, Long id) {
         basketItemRepository.deleteBasketItem(basketUuid, id);
-        updateBasket(basketRepository.findByUuid(basketUuid).get());
+        basketRepository.findByUuid(basketUuid).ifPresent(this::updateBasket);
     }
 
     public BasketItem saveBasketItem(UUID basketUuid, BasketItemForm basketItemForm) {
-        Basket basket = basketRepository.findByUuid(basketUuid).get();
-        BasketItem basketItem = BasketItemCreator.create(basketItemForm, basket, itemService);
-        basketItem = basketItemRepository.save(basketItem);
-        updateBasket(basket);
+        Optional<Basket> basketOptional = basketRepository.findByUuid(basketUuid);
+        BasketItem basketItem = null;
+        if (basketOptional.isPresent()) {
+            Basket basket = basketOptional.get();
+            basketItem = BasketItemCreator.create(basketItemForm, basket, itemService);
+            basketItem = basketItemRepository.save(basketItem);
+            updateBasket(basket);
+        }
         return basketItem;
     }
 
