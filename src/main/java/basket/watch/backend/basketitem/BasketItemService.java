@@ -29,11 +29,11 @@ public class BasketItemService {
 
     public void deleteBasketItem(UUID basketUuid, Long id) {
         basketItemRepository.deleteBasketItem(basketUuid, id);
-        basketRepository.findByUuid(basketUuid).ifPresent(this::updateBasket);
+        basketRepository.findById(basketUuid).ifPresent(this::updateBasket);
     }
 
     public BasketItem saveBasketItem(UUID basketUuid, BasketItemForm basketItemForm) {
-        Optional<Basket> basketOptional = basketRepository.findByUuid(basketUuid);
+        Optional<Basket> basketOptional = basketRepository.findById(basketUuid);
         BasketItem basketItem = null;
         if (basketOptional.isPresent()) {
             Basket basket = basketOptional.get();

@@ -25,7 +25,7 @@ public class BasketController {
 
     @Get("/{uuid}")
     public Optional<Basket> get(@NotNull final UUID uuid) {
-        return basketRepository.findByUuid(uuid);
+        return basketRepository.findById(uuid);
     }
 
 }

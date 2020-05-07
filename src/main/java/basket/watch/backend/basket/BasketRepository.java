@@ -4,14 +4,11 @@ import io.micronaut.data.annotation.Repository;
 import io.micronaut.data.jpa.repository.JpaRepository;
 
 import java.time.ZonedDateTime;
-import java.util.Optional;
 import java.util.UUID;
 
 
 @Repository
-public interface BasketRepository extends JpaRepository<Basket, Long> {
-
-    Optional<Basket> findByUuid(UUID uuid);
+public interface BasketRepository extends JpaRepository<Basket, UUID> {
 
     int deleteAllByCreatedAtLessThan(ZonedDateTime zonedDateTime);
 
