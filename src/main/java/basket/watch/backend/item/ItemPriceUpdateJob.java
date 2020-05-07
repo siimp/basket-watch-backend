@@ -25,14 +25,18 @@ public class ItemPriceUpdateJob {
 
     private final EntityManager entityManager;
 
-    @Transactional
+    @Transactional(dontRollbackOn = RuntimeException.class)
     @Scheduled(cron = "${basket-watch.job.item-price-update.cron}")
     void execute() {
-        log.info("starting to update basket item prices");
+        log.info("starting to update item prices");
         Page<Item> page = itemRepository.findAll(getPageable(0));
         for (int pageNumber = 0; pageNumber < page.getTotalPages(); pageNumber++, page = itemRepository.findAll(getPageable(pageNumber))) {
             for (Item item: page.getContent()) {
-                itemService.update(item);
+                try {
+                    itemService.update(item);
+                } catch (RuntimeException e) {
+                    log.error("update failed for item {}", item.getId());
+                }
                 ThreadUtils.randomSleep();
             }
             itemRepository.saveAll(page.getContent());
@@ -41,7 +45,7 @@ public class ItemPriceUpdateJob {
             log.info("updated {} items", page.getNumberOfElements());
         }
 
-        log.info("finished updating prices");
+        log.info("finished updating item prices");
     }
 
     private Pageable getPageable(int pageNumber) {

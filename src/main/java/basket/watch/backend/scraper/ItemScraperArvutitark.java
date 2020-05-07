@@ -13,6 +13,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
 @Singleton
@@ -45,9 +46,11 @@ public class ItemScraperArvutitark implements ItemScraper {
 
     private String getResponse(String url) {
         HttpGet get = new HttpGet(url);
+        get.setHeader("Content-Type","text/html; charset=UTF-8");
         try {
             CloseableHttpResponse response = apacheHttpClient.execute(get);
-            return IOUtils.readText(new BufferedReader(new InputStreamReader(response.getEntity().getContent())));
+            return IOUtils.readText(new BufferedReader(new InputStreamReader(response.getEntity().getContent(),
+                    StandardCharsets.UTF_8)));
         } catch (IOException e) {
             log.error(e.getMessage(), e);
         }
@@ -70,6 +73,7 @@ public class ItemScraperArvutitark implements ItemScraper {
         String start = "<div class=\"product-price\">";
         Integer startIndex = response.indexOf(start, startSectionIndex) + start.length();
         Integer endIndex = response.indexOf('€', startIndex);
+
         return new BigDecimal(response.substring(startIndex, endIndex));
     }
 
