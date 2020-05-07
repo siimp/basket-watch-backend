@@ -1,16 +1,15 @@
 package basket.watch.backend.scraper;
 
 import io.micronaut.core.io.ResourceLoader;
-import io.micronaut.http.client.BlockingHttpClient;
-import io.micronaut.http.client.HttpClient;
 import io.micronaut.test.annotation.MicronautTest;
 import io.micronaut.test.annotation.MockBean;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.mockito.Mockito;
 
 import javax.inject.Inject;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
@@ -39,30 +38,24 @@ public class ItemScraperArvutitarkTests {
         Optional<InputStream> test = resourceLoader.getResourceAsStream(ITEM_HTML_RESOURCE);
         itemHtml = new String(test.get().readAllBytes(), StandardCharsets.UTF_8);
 
-        HttpClient httpClientMock = httpClient();
-        BlockingHttpClient blockingHttpClient = blockingHttpClient();
+        CloseableHttpClient httpClientMock = apacheHttpClient();
 
         itemScraperArvutitark = new ItemScraperArvutitark(httpClientMock);
-        when(httpClientMock.toBlocking()).thenReturn(blockingHttpClient);
-        when(blockingHttpClient.retrieve(any(String.class))).thenReturn(itemHtml);
+        when(httpClientMock.execute(any()).getEntity().getContent())
+            .thenReturn(new ByteArrayInputStream(itemHtml.getBytes()));
     }
-
 
     @Test
     public void testScrapeSuccessfully() {
-        ScrapedItem scrapedItem = itemScraperArvutitark.scrapeUrl("");
-        assertEquals("AMD Processor Ryzen 5 3600 3,6GH AM4 100-100000031BOX", scrapedItem.getName());
-        assertEquals(new BigDecimal("188.90"), scrapedItem.getPrice());
+        Optional<ScrapedItem> scrapedItem = itemScraperArvutitark.scrapeUrl("");
+        assertEquals("AMD Processor Ryzen 5 3600 3,6GH AM4 100-100000031BOX", scrapedItem.get().getName());
+        assertEquals(new BigDecimal("188.90"), scrapedItem.get().getPrice());
     }
 
-    @MockBean(HttpClient.class)
-    public HttpClient httpClient() {
-        return mock(HttpClient.class);
+    @MockBean(CloseableHttpClient.class)
+    public CloseableHttpClient apacheHttpClient() {
+        return mock(CloseableHttpClient.class, Mockito.RETURNS_DEEP_STUBS);
     }
 
-    @MockBean(BlockingHttpClient.class)
-    public BlockingHttpClient blockingHttpClient() {
-        return mock(BlockingHttpClient.class);
-    }
 
 }
