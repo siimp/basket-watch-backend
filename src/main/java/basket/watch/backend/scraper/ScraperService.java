@@ -1,5 +1,6 @@
 package basket.watch.backend.scraper;
 
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,9 +11,8 @@ import java.net.URISyntaxException;
 import java.util.Optional;
 
 @Singleton
+@Slf4j
 public class ScraperService {
-
-    private static final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     private final ItemScraper[] registeredScrapers;
 
@@ -23,11 +23,12 @@ public class ScraperService {
 
 
     public Optional<ScrapedItem> scrape(String url) {
+        log.info("scraping url {}", url);
         URI uri = null;
         try {
             uri = new URI(url);
         } catch (URISyntaxException e) {
-            LOG.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
             return Optional.empty();
         }
 

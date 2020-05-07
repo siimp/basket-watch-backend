@@ -3,6 +3,8 @@ package basket.watch.backend.basket;
 import basket.watch.backend.basketitem.BasketItem;
 import basket.watch.backend.common.entity.PriceHistory;
 import lombok.Data;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -25,6 +27,7 @@ public class Basket {
     private PriceHistory priceHistory;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "basket")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<BasketItem> basketItems;
 
     @NotNull

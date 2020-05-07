@@ -6,19 +6,16 @@ import io.micronaut.data.model.Pageable;
 import io.micronaut.data.model.Sort;
 import io.micronaut.scheduling.annotation.Scheduled;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.inject.Singleton;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
-import java.lang.invoke.MethodHandles;
 
 @Singleton
 @RequiredArgsConstructor
+@Slf4j
 public class ItemPriceUpdateJob {
-
-    private static final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     private static final int PAGE_SIZE = 20;
 
@@ -29,9 +26,9 @@ public class ItemPriceUpdateJob {
     private final EntityManager entityManager;
 
     @Transactional
-    @Scheduled(cron = "0 0 1 * * ?")
+    @Scheduled(cron = "${basket-watch.job.item-price-update.cron}")
     void execute() {
-        LOG.info("starting to update basket item prices");
+        log.info("starting to update basket item prices");
         Page<Item> page = itemRepository.findAll(getPageable(0));
         for (int pageNumber = 0; pageNumber < page.getTotalPages(); pageNumber++, page = itemRepository.findAll(getPageable(pageNumber))) {
             for (Item item: page.getContent()) {
@@ -41,10 +38,10 @@ public class ItemPriceUpdateJob {
             itemRepository.saveAll(page.getContent());
             entityManager.flush();
             entityManager.clear();
-            LOG.info("updated {} items", page.getNumberOfElements());
+            log.info("updated {} items", page.getNumberOfElements());
         }
 
-        LOG.info("finished updating prices");
+        log.info("finished updating prices");
     }
 
     private Pageable getPageable(int pageNumber) {

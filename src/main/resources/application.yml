@@ -8,6 +8,9 @@ micronaut:
         web:
           allowedOrigins:
             - http://localhost:8080
+  http:
+    client:
+      read-timeout: 30s
 
   application:
     name: basket-watch-backend
@@ -29,3 +32,12 @@ jpa:
         hbm2ddl:
           auto: update
 
+basket-watch:
+  job:
+    basket-price-update:
+      cron: 0 0 2 * * ?
+    basket-delete:
+      cron: 0 0 3 * * SUN
+      basket-validity-in-weeks: 8
+    item-price-update:
+      cron: 0 0 5 * * ?

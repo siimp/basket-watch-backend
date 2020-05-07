@@ -7,7 +7,6 @@ import basket.watch.backend.item.ItemService;
 import lombok.RequiredArgsConstructor;
 
 import javax.inject.Singleton;
-import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.util.Optional;
 import java.util.UUID;
@@ -25,8 +24,6 @@ public class BasketItemService {
 
     private final BasketService basketService;
 
-    private final EntityManager entityManager;
-
     public void deleteBasketItem(UUID basketUuid, Long id) {
         basketItemRepository.deleteBasketItem(basketUuid, id);
         basketRepository.findById(basketUuid).ifPresent(this::updateBasket);
@@ -38,15 +35,13 @@ public class BasketItemService {
         if (basketOptional.isPresent()) {
             Basket basket = basketOptional.get();
             basketItem = BasketItemCreator.create(basketItemForm, basket, itemService);
-            basketItem = basketItemRepository.save(basketItem);
-            updateBasket(basket);
+            basket.getBasketItems().add(basketItem);
+            basketService.updatePriceAndResetMinMax(basket);
         }
         return basketItem;
     }
 
     private void updateBasket(Basket basket) {
-        entityManager.flush();
-        entityManager.refresh(basket);
         basketService.updatePriceAndResetMinMax(basket);
     }
 }

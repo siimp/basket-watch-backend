@@ -2,27 +2,27 @@ package basket.watch.backend.basket;
 
 import io.micronaut.scheduling.annotation.Scheduled;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.inject.Singleton;
-import java.lang.invoke.MethodHandles;
+import javax.transaction.Transactional;
 import java.time.ZonedDateTime;
 
 @Singleton
 @RequiredArgsConstructor
+@Slf4j
 public class BasketDeleteJob {
-
-    private static final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
-
-    private static final int BASKET_VALIDITY_IN_WEEKS = 8;
 
     private final BasketRepository basketRepository;
 
-    @Scheduled(cron = "0 0 0 * * ?")
+    private final BasketDeleteJobProperties properties;
+
+    @Scheduled(cron = "${basket-watch.job.basket-delete.cron}")
+    @Transactional
     void execute() {
-        LOG.info("starting to delete old baskets");
-        int deletedBaskets = basketRepository.deleteAllByCreatedAtLessThan(ZonedDateTime.now().plusWeeks(BASKET_VALIDITY_IN_WEEKS));
-        LOG.info("deleted {} old baskets", deletedBaskets);
+        log.info("starting to delete old baskets older than {} weeks", properties.getBasketValidityInWeeks());
+        int deletedBaskets = basketRepository.deleteAllByCreatedAtLessThan(ZonedDateTime.now()
+                .minusWeeks(properties.getBasketValidityInWeeks()));
+        log.info("deleted {} old baskets", deletedBaskets);
     }
 }

@@ -27,10 +27,8 @@ public class BasketItem {
 
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(foreignKey = @ForeignKey(name = "fk_basket_item_basket_id"))
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(nullable = false, updatable = false, foreignKey = @ForeignKey(name = "fk_basket_item_basket_id"))
     private Basket basket;
-
-
 
 }
