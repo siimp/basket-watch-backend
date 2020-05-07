@@ -44,6 +44,7 @@ dependencies {
     implementation "io.micronaut.data:micronaut-data-hibernate-jpa:$micronautDataVersion"
     implementation 'io.micronaut.configuration:micronaut-hibernate-validator'
     implementation 'org.postgresql:postgresql:42.2.12'
+    implementation 'org.apache.httpcomponents:httpclient:4.5.12'
 
     runtimeOnly "ch.qos.logback:logback-classic:1.2.3"
     runtimeOnly "com.h2database:h2"

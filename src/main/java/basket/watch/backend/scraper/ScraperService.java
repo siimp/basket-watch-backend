@@ -1,11 +1,8 @@
 package basket.watch.backend.scraper;
 
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.inject.Singleton;
-import java.lang.invoke.MethodHandles;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Optional;
@@ -35,7 +32,7 @@ public class ScraperService {
         String domain = uri.getHost();
 
         ItemScraper itemScraper = findByDomain(domain);
-        return Optional.ofNullable(itemScraper.scrapeUrl(url));
+        return itemScraper.scrapeUrl(url);
     }
 
     private ItemScraper findByDomain(String domain) {

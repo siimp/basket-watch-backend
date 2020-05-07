@@ -1,8 +1,10 @@
 package basket.watch.backend.scraper;
 
+import java.util.Optional;
+
 public interface ItemScraper {
 
-    ScrapedItem scrapeUrl(String url);
+    Optional<ScrapedItem> scrapeUrl(String url);
 
     boolean supports(String domain);
 

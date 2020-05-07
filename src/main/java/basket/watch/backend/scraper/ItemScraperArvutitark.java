@@ -1,30 +1,58 @@
 package basket.watch.backend.scraper;
 
-import io.micronaut.http.client.HttpClient;
+import io.micronaut.core.io.IOUtils;
+import io.micronaut.core.util.StringUtils;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
 
 import javax.inject.Singleton;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.math.BigDecimal;
+import java.util.Optional;
 
 @Singleton
 @RequiredArgsConstructor
+@Slf4j
 public class ItemScraperArvutitark implements ItemScraper {
 
     private static final String DOMAIN = "arvutitark.ee";
 
     private static final String START_SECTION = "<section class=\"body\">";
 
-    private final HttpClient httpClient;
+    // micronaut HttpClient fails with "Request URI specifies no host to connect to" from class DefaultHttpClient after redirect with relative Location header
+    private final CloseableHttpClient apacheHttpClient;
 
     @Override
-    public ScrapedItem scrapeUrl(String url) {
-        String response = httpClient.toBlocking().retrieve(url);
+    public Optional<ScrapedItem> scrapeUrl(String url) {
+        String response = getResponse(url);
+
+        if (!StringUtils.hasText(response)) {
+            return Optional.empty();
+        }
+
         String name = getName(response);
         BigDecimal price = getPrice(response);
         ScrapedItem scrapedItem = new ScrapedItem();
         scrapedItem.setName(name);
         scrapedItem.setPrice(price);
-        return scrapedItem;
+        return Optional.of(scrapedItem);
+    }
+
+    private String getResponse(String url) {
+        HttpGet get = new HttpGet(url);
+        try {
+            CloseableHttpResponse response = apacheHttpClient.execute(get);
+            return IOUtils.readText(new BufferedReader(new InputStreamReader(response.getEntity().getContent())));
+        } catch (IOException e) {
+            log.error(e.getMessage(), e);
+        }
+
+        return null;
     }
 
     private String getName(String response) {

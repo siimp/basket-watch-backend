@@ -11,7 +11,7 @@ micronaut:
   http:
     client:
       read-timeout: 30s
-
+      follow-redirects: true
   application:
     name: basket-watch-backend
 ---
