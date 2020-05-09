@@ -1,5 +1,6 @@
 package basket.watch.backend.basket;
 
+import basket.watch.backend.basket.dto.BasketDto;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Post;
@@ -17,19 +18,25 @@ import java.util.UUID;
 @Slf4j
 public class BasketController {
 
-    private final BasketRepository basketRepository;
+    private final BasketService basketService;
 
     @Post
-    public Basket post() {
+    public BasketDto post() {
         log.info("creating new basket");
         Basket basket = BasketCreator.createEmpty();
-        return basketRepository.save(basket);
+        return basketService.save(basket);
     }
 
     @Get("/{uuid}")
-    public Optional<Basket> get(@NotNull final UUID uuid) {
+    public Optional<BasketDto> get(@NotNull final UUID uuid) {
         log.info("getting basket {}", uuid.toString());
-        return basketRepository.findById(uuid);
+        return basketService.findByUuid(uuid);
+    }
+
+    @Get("/{uuid}/refresh")
+    public Optional<BasketDto> refresh(@NotNull final UUID uuid) {
+        log.info("refreshing basket {}", uuid.toString());
+        return basketService.refresh(uuid);
     }
 
 }

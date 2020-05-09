@@ -25,19 +25,20 @@ datasources:
     driverClassName: org.postgresql.Driver
     username: basket-watch
     password: basket-watch
+---
 jpa:
   default:
     properties:
       hibernate:
         hbm2ddl:
           auto: update
-
+---
 basket-watch:
   job:
     basket-price-update:
-      cron: 0 0 2 * * ?
+      cron: 0 0 5 * * ?
     basket-delete:
       cron: 0 0 3 * * SUN
       basket-validity-in-weeks: 8
     item-price-update:
-      cron: 0 0 5 * * ?
+      cron: 0 0 1 * * ?

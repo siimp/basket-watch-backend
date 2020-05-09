@@ -10,7 +10,6 @@ import javax.validation.constraints.NotNull;
 
 @Data
 @Entity
-@Table
 public class Item {
 
     @Id

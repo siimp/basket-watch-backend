@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import javax.inject.Singleton;
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 
 @Singleton
@@ -21,7 +22,7 @@ public class BasketDeleteJob {
     @Transactional
     void execute() {
         log.info("starting to delete old baskets older than {} weeks", properties.getBasketValidityInWeeks());
-        int deletedBaskets = basketRepository.deleteAllByCreatedAtLessThan(ZonedDateTime.now()
+        int deletedBaskets = basketRepository.deleteAllByUpdatedAtLessThan(LocalDateTime.now()
                 .minusWeeks(properties.getBasketValidityInWeeks()));
         log.info("deleted {} old baskets", deletedBaskets);
     }

@@ -1,23 +1,24 @@
 package basket.watch.backend.basket;
 
 import basket.watch.backend.basketitem.BasketItem;
+import basket.watch.backend.common.entity.AuditedEntity;
 import basket.watch.backend.common.entity.PriceHistory;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;
 
-@Entity
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Table(indexes = {
         @Index(name = "idx_created_at", columnList = "createdAt")
 })
-public class Basket {
+@Entity
+public class Basket extends AuditedEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -29,10 +30,5 @@ public class Basket {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "basket")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<BasketItem> basketItems;
-
-    @NotNull
-    @Column(columnDefinition = "TIMESTAMP WITH TIME ZONE")
-    private ZonedDateTime createdAt = ZonedDateTime.now();
-
 
 }

@@ -9,8 +9,8 @@ import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-@Entity
 @Data
+@Entity
 public class BasketItem {
 
     @Id

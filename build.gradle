@@ -20,7 +20,7 @@ configurations {
 }
 
 ext {
-    micronautDataVersion = "1.0.1"
+    micronautDataVersion = "1.0.2"
 }
 
 dependencies {
