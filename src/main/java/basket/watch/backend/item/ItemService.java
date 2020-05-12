@@ -4,6 +4,7 @@ import basket.watch.backend.common.entity.PriceHistory;
 import basket.watch.backend.scraper.ScrapedItem;
 import basket.watch.backend.scraper.ScraperService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,6 +12,7 @@ import javax.inject.Singleton;
 import java.lang.invoke.MethodHandles;
 import java.util.Optional;
 
+@Slf4j
 @Singleton
 @RequiredArgsConstructor
 public class ItemService {
@@ -26,6 +28,7 @@ public class ItemService {
         Optional<Item> existingItem = itemRepository.findByUrl(url);
 
         if (existingItem.isPresent()) {
+            log.info("using existing item {} - {}", existingItem.get().getId(), existingItem.get().getName());
             return existingItem.get();
         }
 

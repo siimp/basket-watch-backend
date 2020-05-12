@@ -1,5 +1,6 @@
 package basket.watch.backend.scraper;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.micronaut.core.io.ResourceLoader;
 import io.micronaut.test.annotation.MicronautTest;
 import io.micronaut.test.annotation.MockBean;
@@ -22,16 +23,19 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @MicronautTest
-public class ItemScraperArvutitarkTests {
+public class ItemScraper1ATests {
 
-    private static final String ITEM_HTML_RESOURCE = "item_arvutitark.html";
+    private static final String ITEM_HTML_RESOURCE = "item_1A.html";
 
     private String itemHtml;
 
-    private ItemScraperArvutitark scraper;
+    private ItemScraper1A scraper;
 
     @Inject
     private ResourceLoader resourceLoader;
+
+    @Inject
+    private ObjectMapper objectMapper;
 
     @BeforeEach
     public void beforeEach() throws IOException {
@@ -40,7 +44,7 @@ public class ItemScraperArvutitarkTests {
 
         CloseableHttpClient httpClientMock = apacheHttpClient();
 
-        scraper = new ItemScraperArvutitark(httpClientMock);
+        scraper = new ItemScraper1A(httpClientMock, objectMapper);
         when(httpClientMock.execute(any()).getEntity().getContent())
             .thenReturn(new ByteArrayInputStream(itemHtml.getBytes()));
     }
@@ -48,8 +52,8 @@ public class ItemScraperArvutitarkTests {
     @Test
     public void testScrapeSuccessfully() {
         Optional<ScrapedItem> scrapedItem = scraper.scrapeUrl("");
-        assertEquals("AMD Processor Ryzen 5 3600 3,6GH AM4 100-100000031BOX", scrapedItem.get().getName());
-        assertEquals(new BigDecimal("188.90"), scrapedItem.get().getPrice());
+        assertEquals("Gigabyte AORUS NVMe Gen4 SSD 500GB", scrapedItem.get().getName());
+        assertEquals(new BigDecimal("135.0"), scrapedItem.get().getPrice());
     }
 
     @MockBean(CloseableHttpClient.class)

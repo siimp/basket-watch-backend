@@ -14,8 +14,9 @@ public class ScraperService {
     private final ItemScraper[] registeredScrapers;
 
 
-    public ScraperService(ItemScraperArvutitark itemScraperArvutitark, ItemScraperDefault itemScraperDefault) {
-        registeredScrapers = new ItemScraper[]{itemScraperArvutitark, itemScraperDefault};
+    public ScraperService(ItemScraperArvutitark itemScraperArvutitark,
+                          ItemScraper1A itemScraper1A) {
+        registeredScrapers = new ItemScraper[]{itemScraperArvutitark, itemScraper1A};
     }
 
 
