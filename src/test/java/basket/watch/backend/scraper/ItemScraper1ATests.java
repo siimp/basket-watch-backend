@@ -2,8 +2,8 @@ package basket.watch.backend.scraper;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.micronaut.core.io.ResourceLoader;
-import io.micronaut.test.annotation.MicronautTest;
 import io.micronaut.test.annotation.MockBean;
+import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

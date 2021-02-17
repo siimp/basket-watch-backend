@@ -2,6 +2,7 @@ package basket.watch.backend.basket;
 
 import basket.watch.backend.basketitem.BasketItem;
 import basket.watch.backend.common.entity.AuditedEntity;
+import basket.watch.backend.common.entity.Notification;
 import basket.watch.backend.common.entity.PriceHistory;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -30,5 +31,8 @@ public class Basket extends AuditedEntity {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "basket")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<BasketItem> basketItems;
+
+    @Embedded
+    private Notification notification;
 
 }
