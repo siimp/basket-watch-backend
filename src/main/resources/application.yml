@@ -42,3 +42,8 @@ basket-watch:
       basket-validity-in-weeks: 8
     item-price-update:
       cron: 0 0 1 * * ?
+    notification:
+      cron: 0 0 8 * * ?
+  mail:
+    from: basket-watch-info@siimp.ee
+    smtp-host: 127.0.0.1

@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import javax.inject.Singleton;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.Optional;
@@ -34,6 +35,7 @@ public class BasketService {
         if (newPrice.compareTo(basket.getPriceHistory().getPriceMin()) < 0) {
             basket.getPriceHistory().setPriceMin(newPrice);
             basket.getPriceHistory().setPriceMinAt(newPriceAt);
+            setNotificationForLowerPrice(basket);
         } else if (newPrice.compareTo(basket.getPriceHistory().getPriceMax()) > 0) {
             basket.getPriceHistory().setPriceMax(newPrice);
             basket.getPriceHistory().setPriceMaxAt(newPriceAt);
@@ -41,6 +43,13 @@ public class BasketService {
 
         return basket;
 
+    }
+
+    private void setNotificationForLowerPrice(Basket basket) {
+        if (basket.getNotification() != null) {
+            basket.getNotification().setShouldSendNotification(Boolean.TRUE);
+            basket.getNotification().setShouldSendNotificationAt(LocalDate.now());
+        }
     }
 
     private void resetMinMaxTo(Basket basket, BigDecimal price, ZonedDateTime priceAt) {

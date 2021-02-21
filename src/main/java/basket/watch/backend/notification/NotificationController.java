@@ -23,6 +23,8 @@ public class NotificationController {
 
     private final BasketService basketService;
 
+    private final EmailService emailService;
+
     @Post
     public HttpResponse<Void> post(@NotNull final UUID basketUuid, final NotificationForm notificationForm) {
         log.info("subscribing to notification for basket {}", basketUuid);
@@ -46,6 +48,16 @@ public class NotificationController {
         if (basketService.existsByUuid(basketUuid)) {
             notificationService.unsubscribe(basketUuid);
         }
+
+        return HttpResponse.ok();
+    }
+
+    @Get("/test-send")
+    public HttpResponse<Void> send(@NotNull final UUID basketUuid) {
+        log.info("unsubscribing notifications for basket {}", basketUuid);
+
+        emailService.sendNotification("test",
+                basketService.findByUuid(basketUuid).get().getNotification().getEmail());
 
         return HttpResponse.ok();
     }
