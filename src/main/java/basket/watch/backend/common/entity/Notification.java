@@ -10,5 +10,5 @@ public class Notification {
 
     private String email;
 
-    private boolean subscribed;
+    private Boolean subscribed;
 }

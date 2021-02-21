@@ -82,4 +82,8 @@ public class BasketService {
 
         return Optional.empty();
     }
+
+    public boolean existsByUuid(UUID basketUuid) {
+        return basketRepository.existsById(basketUuid);
+    }
 }

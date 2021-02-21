@@ -1,5 +1,6 @@
 package basket.watch.backend.basket;
 
+import basket.watch.backend.common.entity.Notification;
 import basket.watch.backend.common.entity.PriceHistory;
 import lombok.experimental.UtilityClass;
 
@@ -13,6 +14,7 @@ public class BasketCreator {
     public static Basket createEmpty() {
         Basket basket = new Basket();
         basket.setPriceHistory(createEmptyPriceHistory());
+        basket.setNotification(createEmptyNotification());
         basket.setBasketItems(new ArrayList<>());
         return basket;
     }
@@ -27,5 +29,10 @@ public class BasketCreator {
         priceHistory.setPriceMax(BigDecimal.ZERO);
         priceHistory.setPriceMaxAt(now);
         return priceHistory;
+    }
+
+    private static Notification createEmptyNotification() {
+        Notification notification = new Notification();
+        return notification;
     }
 }
