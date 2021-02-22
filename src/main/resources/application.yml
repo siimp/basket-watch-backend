@@ -46,4 +46,5 @@ basket-watch:
       cron: 0 0 8 * * ?
   mail:
     from: basket-watch-info@siimp.ee
+    from-personal: Basket-Watch (no-reply)
     smtp-host: 127.0.0.1

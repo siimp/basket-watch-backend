@@ -52,13 +52,4 @@ public class NotificationController {
         return HttpResponse.ok();
     }
 
-    @Get("/test-send")
-    public HttpResponse<Void> send(@NotNull final UUID basketUuid) {
-        log.info("unsubscribing notifications for basket {}", basketUuid);
-
-        emailService.sendNotification("test",
-                basketService.findByUuid(basketUuid).get().getNotification().getEmail());
-
-        return HttpResponse.ok();
-    }
 }

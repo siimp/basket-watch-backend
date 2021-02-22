@@ -29,12 +29,12 @@ public class EmailService {
         this.session = Session.getInstance(properties, null);
     }
 
-    public void sendNotification(String message, String to) {
+    public void sendNotification(String message, String subject, String to) {
         MimeMessage mimeMessage = new MimeMessage(session);
         try {
             mimeMessage.addHeader("Content-type", "text/HTML; charset=UTF-8");
-            mimeMessage.setFrom(new InternetAddress(mailProperties.getFrom(), "Basket-Watch info (no-reply)"));
-            mimeMessage.setSubject("Basket-Watch (no-reply)", "UTF-8");
+            mimeMessage.setFrom(new InternetAddress(mailProperties.getFrom(), mailProperties.getFromPersonal()));
+            mimeMessage.setSubject(subject, "UTF-8");
             mimeMessage.setText(message, "UTF-8");
             mimeMessage.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to, false));
             Transport.send(mimeMessage);

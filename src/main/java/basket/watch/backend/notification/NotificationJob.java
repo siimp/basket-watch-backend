@@ -23,6 +23,8 @@ public class NotificationJob {
 
     private static final String ERROR_EMAIL_MESSAGE = "Our services are experiencing difficulties at the moment, please be patient.";
 
+    private static final String SUBJECT = "Basket price update";
+
     private final BasketRepository basketRepository;
 
     private final EmailService emailService;
@@ -39,7 +41,7 @@ public class NotificationJob {
                         Boolean.TRUE, Boolean.TRUE, LocalDate.now());
         for (Basket basket : baskets) {
             if (basket.getNotification() != null) {
-                emailService.sendNotification(getMessage(basket), basket.getNotification().getEmail());
+                emailService.sendNotification(getMessage(basket), SUBJECT, basket.getNotification().getEmail());
                 basket.getNotification().setShouldSendNotification(Boolean.FALSE);
                 basketRepository.save(basket);
             }

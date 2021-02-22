@@ -12,8 +12,12 @@ import javax.validation.constraints.NotBlank;
 @Data
 public class MailProperties {
 
+    @NotBlank
     @Email
     private String from;
+
+    @NotBlank
+    private String fromPersonal;
 
     @NotBlank
     private String smtpHost;
