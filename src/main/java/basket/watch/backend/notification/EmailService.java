@@ -1,5 +1,7 @@
 package basket.watch.backend.notification;
 
+import lombok.RequiredArgsConstructor;
+
 import javax.annotation.PostConstruct;
 import javax.inject.Singleton;
 import javax.mail.Message;
@@ -8,18 +10,20 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Properties;
 
+@RequiredArgsConstructor
 @Singleton
 public class EmailService {
 
-    private MailProperties mailProperties;
+    private final MailProperties mailProperties;
 
     private Session session = null;
 
     @PostConstruct
-    public void init() {
+    public void init() throws IOException {
         Properties properties = System.getProperties();
         properties.put("mail.smtp.host", mailProperties.getSmtpHost());
         this.session = Session.getInstance(properties, null);
