@@ -2,6 +2,7 @@ package basket.watch.backend.basket;
 
 import basket.watch.backend.basket.dto.BasketDto;
 import io.micronaut.http.annotation.Controller;
+import io.micronaut.http.annotation.Delete;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Post;
 import io.micronaut.validation.Validated;
@@ -20,6 +21,8 @@ public class BasketController {
 
     private final BasketService basketService;
 
+    private final BasketRepository basketRepository;
+
     @Post
     public BasketDto post() {
         log.info("creating new basket");
@@ -37,6 +40,12 @@ public class BasketController {
     public Optional<BasketDto> refresh(@NotNull final UUID uuid) {
         log.info("refreshing basket {}", uuid.toString());
         return basketService.refresh(uuid);
+    }
+
+    @Delete("/{uuid}")
+    public void delete(@NotNull final UUID uuid) {
+        log.info("deleting basket {}", uuid.toString());
+        basketRepository.deleteById(uuid);
     }
 
 }
