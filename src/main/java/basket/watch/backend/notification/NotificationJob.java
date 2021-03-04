@@ -34,20 +34,16 @@ public class NotificationJob {
     @Transactional
     @Scheduled(cron = "${basket-watch.job.notification.cron}")
     void execute() {
-        log.info("starting notification job");
+        log.info("starting to send notifications");
 
-        List<Basket> baskets = basketRepository
-                .findAllByNotificationSubscribedAndNotificationShouldSendNotificationAndNotificationShouldSendNotificationAt(
-                        Boolean.TRUE, Boolean.TRUE, LocalDate.now());
+        List<Basket> baskets = basketRepository.findAllForNotification(Boolean.TRUE, Boolean.TRUE, LocalDate.now());
         for (Basket basket : baskets) {
-            if (basket.getNotification() != null) {
-                emailService.sendNotification(getMessage(basket), SUBJECT, basket.getNotification().getEmail());
-                basket.getNotification().setShouldSendNotification(Boolean.FALSE);
-                basketRepository.save(basket);
-            }
+            emailService.sendNotification(getMessage(basket), SUBJECT, basket.getNotification().getEmail());
+            basket.getNotification().setShouldSendNotification(Boolean.FALSE);
+            basketRepository.save(basket);
         }
 
-        log.info("finished notification job");
+        log.info("sent {} notifications", baskets.size());
     }
 
     private String getMessage(Basket basket) {

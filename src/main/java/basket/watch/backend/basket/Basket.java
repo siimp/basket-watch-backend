@@ -10,6 +10,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -34,5 +35,7 @@ public class Basket extends AuditedEntity {
 
     @Embedded
     private Notification notification;
+
+    private LocalDate lastViewedAt;
 
 }

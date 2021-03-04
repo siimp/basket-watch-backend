@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -33,13 +34,11 @@ public class BasketController {
     @Get("/{uuid}")
     public Optional<BasketDto> get(@NotNull final UUID uuid) {
         log.info("getting basket {}", uuid.toString());
-        return basketService.findByUuid(uuid);
-    }
-
-    @Get("/{uuid}/refresh")
-    public Optional<BasketDto> refresh(@NotNull final UUID uuid) {
-        log.info("refreshing basket {}", uuid.toString());
-        return basketService.refresh(uuid);
+        Optional<BasketDto>  basket =  basketService.findByUuid(uuid);
+        if (basket.isPresent()) {
+            basketRepository.updateLastViewedAtByUuid(LocalDate.now(), basket.get().getUuid());
+        }
+        return basket;
     }
 
     @Delete("/{uuid}")
