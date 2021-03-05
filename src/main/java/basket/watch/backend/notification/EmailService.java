@@ -10,7 +10,6 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Properties;
 
@@ -23,7 +22,7 @@ public class EmailService {
     private Session session = null;
 
     @PostConstruct
-    public void init() throws IOException {
+    public void init() {
         Properties properties = System.getProperties();
         properties.put("mail.smtp.host", mailProperties.getSmtpHost());
         this.session = Session.getInstance(properties, null);
@@ -32,10 +31,9 @@ public class EmailService {
     public void sendNotification(String message, String subject, String to) {
         MimeMessage mimeMessage = new MimeMessage(session);
         try {
-            mimeMessage.addHeader("Content-type", "text/HTML; charset=UTF-8");
             mimeMessage.setFrom(new InternetAddress(mailProperties.getFrom(), mailProperties.getFromPersonal()));
             mimeMessage.setSubject(subject, "UTF-8");
-            mimeMessage.setText(message, "UTF-8");
+            mimeMessage.setContent(message, "text/html; charset=UTF-8");
             mimeMessage.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to, false));
             Transport.send(mimeMessage);
         } catch (MessagingException | UnsupportedEncodingException e) {
