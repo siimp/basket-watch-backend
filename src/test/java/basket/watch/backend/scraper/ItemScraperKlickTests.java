@@ -29,7 +29,7 @@ public class ItemScraperKlickTests {
 
     private String itemHtml;
 
-    private GenericItemScraper scraper;
+    private ItemScraperGeneric scraper;
 
     @Inject
     private ResourceLoader resourceLoader;
@@ -44,7 +44,7 @@ public class ItemScraperKlickTests {
 
         CloseableHttpClient httpClientMock = apacheHttpClient();
 
-        scraper = new GenericItemScraper(httpClientMock);
+        scraper = new ItemScraperGeneric(httpClientMock);
         when(httpClientMock.execute(any()).getEntity().getContent())
             .thenReturn(new ByteArrayInputStream(itemHtml.getBytes()));
     }

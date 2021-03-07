@@ -26,16 +26,16 @@ public class ScraperService {
 
     private final Map<String, ItemScraper> scraperClassScraper = new HashMap<>();
 
-    private final GenericItemScraper genericItemScraper;
+    private final ItemScraperGeneric itemScraperGeneric;
 
     public ScraperService(ItemScraperArvutitark itemScraperArvutitark,
                           ItemScraper1A itemScraper1A,
                           ResourceLoader resourceLoader,
                           ObjectMapper objectMapper,
-                          GenericItemScraper genericItemScraper) {
-        this.scraperClassScraper.put(itemScraperArvutitark.getClass().getSimpleName(), itemScraperArvutitark);
-        this.scraperClassScraper.put(itemScraper1A.getClass().getSimpleName(), itemScraper1A);
-        this.genericItemScraper = genericItemScraper;
+                          ItemScraperGeneric itemScraperGeneric) {
+        this.scraperClassScraper.put("ItemScraperArvutitark", itemScraperArvutitark);
+        this.scraperClassScraper.put("ItemScraper1A", itemScraper1A);
+        this.itemScraperGeneric = itemScraperGeneric;
         parsePlatforms(resourceLoader, objectMapper);
     }
 
@@ -80,7 +80,7 @@ public class ScraperService {
             return itemScraper.scrapeUrl(url);
         }
 
-        return genericItemScraper.scrapeUrl(url, platform);
+        return itemScraperGeneric.scrapeUrl(url, platform);
     }
 
 }

@@ -16,11 +16,11 @@ import java.util.Optional;
 
 @Singleton
 @Slf4j
-public class GenericItemScraper {
+public class ItemScraperGeneric {
 
     private final CloseableHttpClient apacheHttpClient;
 
-    public GenericItemScraper(CloseableHttpClient apacheHttpClient) {
+    public ItemScraperGeneric(CloseableHttpClient apacheHttpClient) {
         this.apacheHttpClient = apacheHttpClient;
     }
 

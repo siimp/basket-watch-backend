@@ -14,8 +14,8 @@
   {
     "name": "Klick",
     "domain": "www.klick.ee",
-    "nameXpath": "",
-    "priceXpath": "",
+    "nameJsoupSelector": "",
+    "priceJsoupSelector": "",
     "image": "base64here"
   }
 ]
