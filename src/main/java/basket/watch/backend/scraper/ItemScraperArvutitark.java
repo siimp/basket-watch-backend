@@ -11,8 +11,6 @@ import java.util.Optional;
 @Slf4j
 public class ItemScraperArvutitark extends AbstractItemScraper {
 
-    private static final String DOMAIN = "arvutitark.ee";
-
     private static final String START_SECTION = "<section class=\"body\">";
 
 
@@ -64,11 +62,5 @@ public class ItemScraperArvutitark extends AbstractItemScraper {
 
         return Optional.empty();
     }
-
-    @Override
-    public boolean supports(String domain) {
-        return DOMAIN.equals(domain);
-    }
-
 
 }

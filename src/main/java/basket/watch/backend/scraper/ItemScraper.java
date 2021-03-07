@@ -6,6 +6,4 @@ public interface ItemScraper {
 
     Optional<ScrapedItem> scrapeUrl(String url);
 
-    boolean supports(String domain);
-
 }

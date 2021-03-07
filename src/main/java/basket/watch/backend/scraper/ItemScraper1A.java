@@ -15,14 +15,11 @@ import java.util.Optional;
 @Slf4j
 public class ItemScraper1A extends AbstractItemScraper {
 
-    private static final String DOMAIN = "www.1a.ee";
-
     private static final String SCRIPT_START_TAG = "<script type='application/ld+json'>";
 
     private static final String SCRIPT_END_TAG = "</script>";
 
     private ObjectMapper objectMapper;
-
 
     public ItemScraper1A(CloseableHttpClient apacheHttpClient, ObjectMapper objectMapper) {
         super(apacheHttpClient);
@@ -51,11 +48,6 @@ public class ItemScraper1A extends AbstractItemScraper {
             return Optional.of(scrapedItem);
         }
         return Optional.empty();
-    }
-
-    @Override
-    public boolean supports(String domain) {
-        return DOMAIN.equals(domain);
     }
 
 }

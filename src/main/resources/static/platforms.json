@@ -1,0 +1,21 @@
+[
+  {
+    "name": "Arvutitark",
+    "domain": "arvutitark.ee",
+    "scraperClass": "ItemScraperArvutitark",
+    "image": "base64here"
+  },
+  {
+    "name": "1A",
+    "domain": "www.1a.ee",
+    "scraperClass": "ItemScraper1A",
+    "image": "base64here"
+  },
+  {
+    "name": "Klick",
+    "domain": "www.klick.ee",
+    "nameXpath": "",
+    "priceXpath": "",
+    "image": "base64here"
+  }
+]

@@ -14,6 +14,12 @@ micronaut:
       follow-redirects: true
   application:
     name: basket-watch-backend
+  router:
+    static-resources:
+      default:
+        enabled: true
+        paths: classpath:static
+        mapping: "/static/**"
 ---
 jackson:
   serialization:
