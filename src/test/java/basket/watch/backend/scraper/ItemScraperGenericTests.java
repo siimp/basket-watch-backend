@@ -5,7 +5,6 @@ import io.micronaut.core.io.ResourceLoader;
 import io.micronaut.test.annotation.MockBean;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -23,11 +22,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @MicronautTest
-public class ItemScraperKlickTests {
-
-    private static final String ITEM_HTML_RESOURCE = "item_klick.html";
-
-    private String itemHtml;
+public class ItemScraperGenericTests {
 
     private ItemScraperGeneric scraper;
 
@@ -37,28 +32,33 @@ public class ItemScraperKlickTests {
     @Inject
     private ObjectMapper objectMapper;
 
-    @BeforeEach
-    public void beforeEach() throws IOException {
-        Optional<InputStream> test = resourceLoader.getResourceAsStream(ITEM_HTML_RESOURCE);
-        itemHtml = new String(test.get().readAllBytes(), StandardCharsets.UTF_8);
+    @Test
+    public void testScrapeArvutitark() throws IOException {
+        respondWith("item_arvutitark.html");
+        Platform platform = PlatformUtils.parsePlatforms(resourceLoader).get("arvutitark.ee");
+        Optional<ScrapedItem> scrapedItem = scraper.scrapeUrl("", platform);
+        assertEquals("AMD Processor Ryzen 5 3600 3,6GH AM4 100-100000031BOX", scrapedItem.get().getName());
+        assertEquals(new BigDecimal("188.90"), scrapedItem.get().getPrice());
+    }
+
+    @Test
+    public void testScrapeKlick() throws IOException {
+        respondWith("item_klick.html");
+        Platform platform = PlatformUtils.parsePlatforms(resourceLoader).get("www.klick.ee");
+        Optional<ScrapedItem> scrapedItem = scraper.scrapeUrl("", platform);
+        assertEquals("Nutitelefon Google Pixel 4a, 6+128GB", scrapedItem.get().getName());
+        assertEquals(new BigDecimal("459.99"), scrapedItem.get().getPrice());
+    }
+
+    private void respondWith(String resource) throws IOException {
+        Optional<InputStream> test = resourceLoader.getResourceAsStream(resource);
+        String itemHtml = new String(test.get().readAllBytes(), StandardCharsets.UTF_8);
 
         CloseableHttpClient httpClientMock = apacheHttpClient();
 
         scraper = new ItemScraperGeneric(httpClientMock);
         when(httpClientMock.execute(any()).getEntity().getContent())
-            .thenReturn(new ByteArrayInputStream(itemHtml.getBytes()));
-    }
-
-    @Test
-    public void testScrapeSuccessfully() {
-        Optional<ScrapedItem> scrapedItem = scraper.scrapeUrl("", getPlatform());
-        assertEquals("Nutitelefon Google Pixel 4a, 6+128GB", scrapedItem.get().getName());
-        assertEquals(new BigDecimal("459.99"), scrapedItem.get().getPrice());
-    }
-
-    private Platform getPlatform() {
-        Platform platform = new Platform();
-        return platform;
+                .thenReturn(new ByteArrayInputStream(itemHtml.getBytes()));
     }
 
     @MockBean(CloseableHttpClient.class)

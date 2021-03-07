@@ -7,7 +7,9 @@ public class Platform {
     private String name;
     private String domain;
     private String scraperClass;
-    private String nameXpath;
-    private String priceXpath;
+    private String nameJsoupSelector;
+    private String nameJsoupAttributeKey;
+    private String priceJsoupSelector;
+    private String priceJsoupAttributeKey;
     private String image;
 }

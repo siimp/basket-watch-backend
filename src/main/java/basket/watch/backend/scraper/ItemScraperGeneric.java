@@ -1,10 +1,14 @@
 package basket.watch.backend.scraper;
 
 import io.micronaut.core.io.IOUtils;
+import io.micronaut.core.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 import javax.inject.Singleton;
 import java.io.BufferedReader;
@@ -12,11 +16,17 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Singleton
 @Slf4j
 public class ItemScraperGeneric {
+
+    private static final Pattern NON_PRICE_VALUE_SYMBOL = Pattern.compile("[^0-9]");
 
     private final CloseableHttpClient apacheHttpClient;
 
@@ -29,21 +39,39 @@ public class ItemScraperGeneric {
         if (response == null) {
             return Optional.empty();
         }
+        Document htmlDocument = Jsoup.parse(response);
 
         ScrapedItem scrapedItem = new ScrapedItem();
-        String name = getName(response, platform.getNameXpath());
-        scrapedItem.setName(name);
-        BigDecimal price = getPrice(response, platform.getPriceXpath());
-        scrapedItem.setPrice(price);
+        scrapedItem.setName(getName(htmlDocument, platform));
+        scrapedItem.setPrice(getPrice(htmlDocument, platform));
         return Optional.of(scrapedItem);
     }
 
-    private String getName(String response, String nameXpath) {
-        return null;
+    private String getName(Document htmlDocument, Platform platform) {
+        Element name = htmlDocument.select(platform.getNameJsoupSelector()).first();
+        if (StringUtils.hasText(platform.getNameJsoupAttributeKey())) {
+            return name.attr(platform.getNameJsoupAttributeKey());
+        }
+        return name.text();
     }
 
-    private BigDecimal getPrice(String response, String priceXpath) {
-        return null;
+    private BigDecimal getPrice(Document htmlDocument, Platform platform) {
+        Element priceElement = htmlDocument.select(platform.getPriceJsoupSelector()).first();
+        String price;
+        if (StringUtils.hasText(platform.getPriceJsoupAttributeKey())) {
+            price = priceElement.attr(platform.getPriceJsoupAttributeKey());
+        } else {
+            price = priceElement.text();
+        }
+
+        int endIndex = 0;
+        for (char c : price.toCharArray()) {
+            if (!Character.isDigit(c) && c != '.' && c != ',') {
+                break;
+            }
+            endIndex++;
+        }
+        return new BigDecimal(price.substring(0, endIndex));
     }
 
     private String getResponse(String url) {

@@ -17,9 +17,6 @@ public class ScraperServiceTests {
     private ItemScraper1A itemScraper1A;
 
     @Inject
-    private ItemScraperArvutitark itemScraperArvutitark;
-
-    @Inject
     private ItemScraperGeneric itemScraperGeneric;
 
     @Inject
@@ -37,7 +34,7 @@ public class ScraperServiceTests {
     public void testSelectArvutitarkScraper() {
         String url = "https://arvutitark.ee/some-product";
         scraperService.scrape(url);
-        verify(itemScraperArvutitark, times(1)).scrapeUrl(eq(url));
+        verify(itemScraperGeneric, times(1)).scrapeUrl(eq(url), any());
     }
 
     @Test
@@ -50,11 +47,6 @@ public class ScraperServiceTests {
     @MockBean(value = ItemScraper1A.class)
     public ItemScraper1A itemScraper1A() {
         return mock(ItemScraper1A.class);
-    }
-
-    @MockBean(value = ItemScraperArvutitark.class)
-    public ItemScraperArvutitark itemScraperArvutitark() {
-        return mock(ItemScraperArvutitark.class);
     }
 
     @MockBean(value = ItemScraperGeneric.class)

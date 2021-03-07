@@ -46,7 +46,7 @@ public class ItemScraper1ATests {
 
         scraper = new ItemScraper1A(httpClientMock, objectMapper);
         when(httpClientMock.execute(any()).getEntity().getContent())
-            .thenReturn(new ByteArrayInputStream(itemHtml.getBytes()));
+                .thenReturn(new ByteArrayInputStream(itemHtml.getBytes()));
     }
 
     @Test
