@@ -4,10 +4,8 @@ import basket.watch.backend.basket.dto.BasketDto;
 import lombok.RequiredArgsConstructor;
 
 import javax.inject.Singleton;
-import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.Optional;
 import java.util.UUID;
@@ -77,19 +75,6 @@ public class BasketService {
     public BasketDto save(Basket basket) {
         Basket savedBasket = basketRepository.save(basket);
         return BasketDto.of(savedBasket, basketDeleteJobProperties.getBasketValidityInWeeks());
-    }
-
-    @Transactional
-    public Optional<BasketDto> refresh(UUID uuid) {
-        Optional<Basket> basketOptional = basketRepository.findById(uuid);
-
-        if (basketOptional.isPresent()) {
-            basketOptional.get().setUpdatedAt(LocalDateTime.now());
-            Basket basket = basketRepository.save(basketOptional.get());
-            return Optional.of(BasketDto.of(basket, basketDeleteJobProperties.getBasketValidityInWeeks()));
-        }
-
-        return Optional.empty();
     }
 
     public boolean existsByUuid(UUID basketUuid) {

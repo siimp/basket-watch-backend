@@ -14,7 +14,7 @@ public class BasketCreator {
     public static Basket createEmpty() {
         Basket basket = new Basket();
         basket.setPriceHistory(createEmptyPriceHistory());
-        basket.setNotification(createEmptyNotification());
+        basket.setNotification(new Notification());
         basket.setBasketItems(new ArrayList<>());
         return basket;
     }
@@ -31,8 +31,4 @@ public class BasketCreator {
         return priceHistory;
     }
 
-    private static Notification createEmptyNotification() {
-        Notification notification = new Notification();
-        return notification;
-    }
 }

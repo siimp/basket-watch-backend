@@ -23,8 +23,6 @@ public class NotificationController {
 
     private final BasketService basketService;
 
-    private final EmailService emailService;
-
     @Post
     public HttpResponse<Void> post(@NotNull final UUID basketUuid, final NotificationForm notificationForm) {
         log.info("subscribing to notification for basket {}", basketUuid);
