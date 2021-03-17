@@ -50,6 +50,15 @@ public class ItemScraperGenericTests {
         assertEquals(new BigDecimal("459.99"), scrapedItem.get().getPrice());
     }
 
+    @Test
+    public void testScrapeKaup24() throws IOException {
+        respondWith("item_kaup24.html");
+        Platform platform = PlatformUtils.parsePlatforms(resourceLoader).get("kaup24.ee");
+        Optional<ScrapedItem> scrapedItem = scraper.scrapeUrl("", platform);
+        assertEquals("Asus VG259QM", scrapedItem.get().getName());
+        assertEquals(new BigDecimal("367.00"), scrapedItem.get().getPrice());
+    }
+
     private void respondWith(String resource) throws IOException {
         Optional<InputStream> test = resourceLoader.getResourceAsStream(resource);
         String itemHtml = new String(test.get().readAllBytes(), StandardCharsets.UTF_8);
