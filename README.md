@@ -12,8 +12,7 @@ Add new json element with structure
     "name": "Platform name",
     "domain": "platform.domain.com",
     "nameJsoupSelector": "div.name",
-    "priceJsoupSelector": "div.price",
-    "image": "base64-data-here"
+    "priceJsoupSelector": "div.price"
   }
 ```
 
