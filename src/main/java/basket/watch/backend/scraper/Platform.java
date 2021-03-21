@@ -11,5 +11,4 @@ public class Platform {
     private String nameJsoupAttributeKey;
     private String priceJsoupSelector;
     private String priceJsoupAttributeKey;
-    private String image;
 }

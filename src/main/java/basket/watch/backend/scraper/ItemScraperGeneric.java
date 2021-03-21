@@ -16,17 +16,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Singleton
 @Slf4j
 public class ItemScraperGeneric {
-
-    private static final Pattern NON_PRICE_VALUE_SYMBOL = Pattern.compile("[^0-9]");
 
     private final CloseableHttpClient apacheHttpClient;
 
@@ -71,7 +65,8 @@ public class ItemScraperGeneric {
             }
             endIndex++;
         }
-        return new BigDecimal(price.substring(0, endIndex));
+        String decimalPrice = price.substring(0, endIndex).replace(',', '.');
+        return new BigDecimal(decimalPrice);
     }
 
     private String getResponse(String url) {

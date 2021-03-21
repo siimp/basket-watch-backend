@@ -14,9 +14,6 @@ import static org.mockito.Mockito.*;
 public class ScraperServiceTests {
 
     @Inject
-    private ItemScraper1A itemScraper1A;
-
-    @Inject
     private ItemScraperGeneric itemScraperGeneric;
 
     @Inject
@@ -27,7 +24,7 @@ public class ScraperServiceTests {
     public void testSelect1AScraper() {
         String url = "https://www.1a.ee/some-product";
         scraperService.scrape(url);
-        verify(itemScraper1A, times(1)).scrapeUrl(eq(url));
+        verify(itemScraperGeneric, times(1)).scrapeUrl(eq(url), any());
     }
 
     @Test
@@ -42,11 +39,6 @@ public class ScraperServiceTests {
         String url = "https://www.klick.ee/some-product";
         scraperService.scrape(url);
         verify(itemScraperGeneric, times(1)).scrapeUrl(eq(url), any());
-    }
-
-    @MockBean(value = ItemScraper1A.class)
-    public ItemScraper1A itemScraper1A() {
-        return mock(ItemScraper1A.class);
     }
 
     @MockBean(value = ItemScraperGeneric.class)

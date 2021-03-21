@@ -59,6 +59,24 @@ public class ItemScraperGenericTests {
         assertEquals(new BigDecimal("367.00"), scrapedItem.get().getPrice());
     }
 
+    @Test
+    public void testScrape1A() throws IOException {
+        respondWith("item_1A.html");
+        Platform platform = PlatformUtils.parsePlatforms(resourceLoader).get("www.1a.ee");
+        Optional<ScrapedItem> scrapedItem = scraper.scrapeUrl("", platform);
+        assertEquals("Gigabyte AORUS NVMe Gen4 SSD 500GB", scrapedItem.get().getName());
+        assertEquals(new BigDecimal("135.00"), scrapedItem.get().getPrice());
+    }
+
+    @Test
+    public void testScrapeKrauta() throws IOException {
+        respondWith("item_krauta.html");
+        Platform platform = PlatformUtils.parsePlatforms(resourceLoader).get("www.k-rauta.ee");
+        Optional<ScrapedItem> scrapedItem = scraper.scrapeUrl("", platform);
+        assertEquals("Protsessor AMD Ryzen 5 5600X 3.7GHz", scrapedItem.get().getName());
+        assertEquals(new BigDecimal("366.89"), scrapedItem.get().getPrice());
+    }
+
     private void respondWith(String resource) throws IOException {
         Optional<InputStream> test = resourceLoader.getResourceAsStream(resource);
         String itemHtml = new String(test.get().readAllBytes(), StandardCharsets.UTF_8);
