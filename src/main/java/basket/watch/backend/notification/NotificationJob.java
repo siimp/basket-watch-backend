@@ -57,6 +57,9 @@ public class NotificationJob {
             String text = new String(templateOptional.get().readAllBytes(), StandardCharsets.UTF_8);
             text = text.replace("{{UUID}}", basket.getUuid().toString());
             text = text.replace("{{PRICE}}", basket.getPriceHistory().getPrice().toString());
+            text = text.replace("{{SAVED_AMOUNT}}",
+                    basket.getPriceHistory().getPriceMax().subtract(basket.getPriceHistory().getPrice()).toString());
+
             return text;
         } catch (IOException e) {
             e.printStackTrace();
