@@ -45,7 +45,7 @@ basket-watch:
       cron: 0 0 5 * * ?
     basket-delete:
       cron: 0 0 3 * * SUN
-      basket-validity-in-weeks: 8
+      basket-validity-in-weeks: 24
     item-price-update:
       cron: 0 0 1 * * ?
     notification:
