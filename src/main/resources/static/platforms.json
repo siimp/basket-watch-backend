@@ -2,8 +2,8 @@
   {
     "name": "Arvutitark",
     "domain": "arvutitark.ee",
-    "nameJsoupSelector": "div > h1",
-    "priceJsoupSelector": "div.product-price"
+    "nameJsoupSelector": "h1._product-title",
+    "priceJsoupSelector": "span._main-price"
   },
   {
     "name": "1a.ee",

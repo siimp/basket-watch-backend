@@ -37,8 +37,8 @@ public class ItemScraperGenericTests {
         respondWith("item_arvutitark.html");
         Platform platform = PlatformUtils.parsePlatforms(resourceLoader).get("arvutitark.ee");
         Optional<ScrapedItem> scrapedItem = scraper.scrapeUrl("", platform);
-        assertEquals("AMD Processor Ryzen 5 3600 3,6GH AM4 100-100000031BOX", scrapedItem.get().getName());
-        assertEquals(new BigDecimal("188.90"), scrapedItem.get().getPrice());
+        assertEquals("Procesor AMD Ryzen 5 3600 WOF", scrapedItem.get().getName());
+        assertEquals(new BigDecimal("100.20"), scrapedItem.get().getPrice());
     }
 
     @Test
